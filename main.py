@@ -7,8 +7,8 @@ def main():
             "3. COMPARE MONTHLY EXPENSES\n"
         ))
         
-        if user_welcome_input in (1, 2, 3):
-            print("WORKS!")
+        if user_welcome_input == 1:
+            print("Add Expense")
         else:
             print("Error, option chosen is not available.")
     
