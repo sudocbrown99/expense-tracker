@@ -1,4 +1,7 @@
 def main():
+    
+    ensure_csv()
+    
     try:
         user_welcome_input = int(input(
             "Welcome to Expense Tracker.\n\nPlease choose an option.\n"
