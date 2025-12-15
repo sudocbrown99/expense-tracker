@@ -1,7 +1,9 @@
+from storage import initialize_expenses_storage
+
 def main():
     
-    ensure_csv()
-    
+    initialize_expenses_storage()
+
     try:
         user_welcome_input = int(input(
             "Welcome to Expense Tracker.\n\nPlease choose an option.\n"
