@@ -1,22 +1,23 @@
-from storage import initialize_expenses_storage
+from storage import initialize_expenses_storage, read_expenses_storage, write_expenses_storage, storage_file, total_expenses
 
 def main():
     
     initialize_expenses_storage()
+    write_expenses_storage(total_expenses, storage_file)
 
-    try:
-        user_welcome_input = int(input(
-            "Welcome to Expense Tracker.\n\nPlease choose an option.\n"
-            "1. ADD AN EXPENSE\n"
-            "2. VIEW MONTHLY EXPENSES\n"
-            "3. COMPARE MONTHLY EXPENSES\n"
-        ))
-        
-        if user_welcome_input == 1:
-            print("Add Expense")
-        else:
-            print("Error, option chosen is not available.")
-    
-    except ValueError:
-        print("Error, option chosen is not available.")
+#    try:
+#        user_welcome_input = int(input(
+#            "Welcome to Expense Tracker.\n\nPlease choose an option.\n"
+#            "1. ADD AN EXPENSE\n"
+#            "2. VIEW MONTHLY EXPENSES\n"
+#            "3. COMPARE MONTHLY EXPENSES\n"
+#        ))
+#        
+#        if user_welcome_input == 1:
+#            print("Add Expense")
+#        else:
+#            print("Error, option chosen is not available.")
+#    
+#    except ValueError:
+#        print("Error, option chosen is not available.")
 main()
