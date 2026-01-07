@@ -23,13 +23,17 @@ def read_expenses_storage(filepath):
             read_expenses.append(row)
         return read_expenses
 
-def modify_expenses_storage(additions):
-    expense = {}
-    expense["id"] = max_id
-    expense["date"] = user_date
-    expense["categpry"] = user_cata
-    expense["description"] = user_desc
-    expense["amount"] = user_amount
+def gen_id():
+    expenses = read_expenses_storage(storage_file)
+    if not expenses:
+        return 1
+    existing_ids = [int(row["id"]) for row in expenses if row.get("id")]
+    return max(existing_ids, default=0) + 1
+
+def modify_expenses_storage(additions_dict):
+    working_list = read_expenses_storage(storage_file)
+    working_list.append(additions_dict)
+    write_expenses_storage(working_list, storage_file)
 
 """Writes the contents of read_expenses after modification"""
 def write_expenses_storage(expenses, filepath):

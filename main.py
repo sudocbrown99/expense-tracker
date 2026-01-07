@@ -1,7 +1,7 @@
-from storage import initialize_expenses_storage, read_expenses_storage, write_expenses_storage, storage_file
+from storage import initialize_expenses_storage, read_expenses_storage, write_expenses_storage, storage_file, gen_id, modify_expenses_storage
 
 def prompt_expense():
-    date_str = input("Date (DD-MM-YYY): ").strip()
+    date_str = input("Date (DD-MM-YYYY): ").strip()
     category = input("Category: ").strip()
     description = input("Description: ").strip()
     amount_str = input("Amount (No negative #'s): ").strip()
@@ -30,22 +30,23 @@ def prompt_expense():
         errors.append("amount must be a number")
 
     if not errors:
-        return {
+        additions = {
+            "id": gen_id(),
             "date": date_str,
             "category": category,
             "description": description,
-            "amount": f"(amount:.2f)",
+            "amount": f"{amount:.2f}",
         }
+        modify_expenses_storage(additions)
     
-    print("Error. Please fix the following and retry:")
-    for err in errors:
-        print(f"- {err}")
+    else:
+        print("Error. Please fix the following and retry:")
+        for err in errors:
+            print(f"- {err}")
 
 def main():
     
     initialize_expenses_storage()
-    read_expenses_storage(storage_file)
-
     prompt_expense()
 main()
 
