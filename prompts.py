@@ -4,18 +4,25 @@ from storage import (
     modify_expenses_storage,
 )
 
+from reports import (
+    monthly_total,
+)
+
 def prompt_start():
     start = input("""
         Welcome to Expense Tracker!\n
         Type the number of the option you would like to pick.\n
         1. ADD AN EXPENSE\n
-        2. VIEW REPORT\n
+        2. VIEW MONTHLY EXPENSE REPORT\n
     """)
-    if start == "1":
-        prompt_expense()
-    else:
-        print("Error. Input value not an option.")
-        prompt_start()
+    match response:
+        case "1":
+            prompt_expense()
+        case "2":
+            prompt_monthly_total()
+        case _:
+            print("Error. Input value not an option.")
+            prompt_start()
 
 
 
@@ -70,3 +77,12 @@ def prompt_expense():
         for err in errors:
             print(f"- {err}")
         prompt_expense()
+
+def prompt_monthly_total():
+    response = int(input("Which month would you like to view? (respond with a number 1 - 12): "))
+    
+    if 1 <= response <= 12:
+        monthly_total(response)
+    else:
+        print("- Error. Response was not 1 - 12. Please try again")
+        prompt_monthly_total()
