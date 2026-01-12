@@ -6,18 +6,17 @@ from datetime import datetime
 
 def monthly_total(user_month):
     amounts = []
-    months = []
-    
+    total = 0
+
     expense_list = read_expenses_storage(storage_file)
     
-    for date in expense_list:
-        parsed_date = datetime.strptime(date["date"], "%m-%d-%Y")
-        if parsed_date.month == user_month:
-            months.append(parsed_date.month)
+    for row in expense_list:
+        parsed_data = datetime.strptime(row["date"], "%m-%d-%Y")
+        if parsed_data.month == user_month:
+            amounts.append(float(row["amount"]))
 
-    for amount in expense_list:
-        amounts.append(amount["amount"])
+    for amount in amounts:
+        amount += total
+        total = amount
 
-    print(months)
-
-monthly_total(2)
+    return total
