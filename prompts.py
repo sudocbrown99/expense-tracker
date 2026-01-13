@@ -6,6 +6,7 @@ from reports import (
     monthly_total,
 )
 
+# Welcome prompt for user start
 def prompt_start():
     start = input("""
         Welcome to Expense Tracker!\n
@@ -24,7 +25,7 @@ def prompt_start():
 
 
 
-
+# Prompt for user to input an expense
 def prompt_expense():
     date_str = input("Date (MM-DD-YYYY): ").strip()
     category = input("Category: ").strip()
@@ -76,12 +77,14 @@ def prompt_expense():
             print(f"- {err}")
         prompt_expense()
 
+# Prompt for user to view total expenses catagorized by month
 def prompt_monthly_total():
-    response = int(input("Which month would you like to view? (respond with a number 1 - 12): "))
+    year_response = int(input("Which year?: "))
+    month_response = int(input("Which month would you like to view? (respond with a number 1 - 12): "))
     
-    if 1 <= response <= 12:
-        total = monthly_total(response)
-        print(f"Total for month {response}: ${total:.2f}")
+    if 1 <= month_response <= 12:
+        total = monthly_total(year_response, month_response)
+        print(f"Total for month {month_response}: ${total:.2f}")
 
         repeat = input("Would you like to view another month? Y/N: ").strip()
 
