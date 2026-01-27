@@ -59,6 +59,7 @@ def delete_expense_storage(expense_id):
 
     write_expenses_storage(filtered_expenses, storage_file)
 
+# Edits a row in the storage csv by ID #
 def edit_expense_storage(expense_id, new_date, new_category, new_description, new_amount):
     expenses = read_expenses_storage(storage_file)
     expense = [row for row in expenses if row.get("id") == expense_id]
