@@ -35,58 +35,82 @@ def prompt_start():
 
 # Prompt for the user to input an expense
 def prompt_expense():
-    date_str = input("Date (MM-DD-YYYY): ").strip()
-    category = input("Category: ").strip()
-    description = input("Description: ").strip()
-    amount_str = input("Amount (No negative #'s): ").strip()
-    
-    errors = []
+    additions = {}
 
-    parts = date_str.split("-")
-    if len(parts) != 3 or not all(p.isdigit() for p in parts):
-        errors.append("date must be in MM-DD-YYYY format")
-    else:
-        month, day, year = map(int, parts)
-        if not (1 <= day <= 31 and 1 <= month <= 12 and 1 <= year <= 9999):
-            errors.append("date values are out of range")
-
-        if month == 2 and day > 29:
-            errors.append("An invalid day was entered for February. Please try again.")
-
-    if not category:
-        errors.append("category required")
-    
-    if not description:
-        errors.append("description required")
-
-    try:
-        amount = float(amount_str)
-        if amount <= 0:
-            errors.append("amount must be a positive number")
-    except ValueError:
-        errors.append("amount must be a number")
-
-    if not errors:
-        additions = {
-            "id": gen_id(),
-            "date": date_str,
-            "category": category,
-            "description": description,
-            "amount": f"{amount:.2f}",
-        }
-        modify_expenses_storage(additions)
-
-        expense_again = input("Would you like to input another expense? Y/N: ").strip()
-        if expense_again.lower() == "y":
-            prompt_expense()
+    def date_get():
+        errors = []
+        date_str = input("Date (MM-DD-YYYY): ").strip()
+        parts = date_str.split("-")
+        if len(parts) != 3 or not all(p.isdigit() for p in parts):
+            errors.append("date must be in MM-DD-YYYY format")
         else:
-            prompt_start()
-    
-    else:
-        print("Error. Please fix the following and retry:")
-        for err in errors:
-            print(f"- {err}")
+            month, day, year = map(int, parts)
+            if not (1 <= day <= 31 and 1 <= month <= 12 and 1 <= year <= 9999):
+                errors.append("date values are out of range")
+
+            if month == 2 and day > 29:
+                errors.append("An invalid day was entered for February. Please try again.")
+        if not errors:
+            additions["date"] = date_str
+        else:
+            print("Error. Please fix the following and retry:")
+            for err in errors:
+                print(f"- {err}")
+            date_get()
+
+    def catagory_get():
+        errors = []
+        category = input("Category: ").strip()
+        if not category:
+            errors.append("category required")
+        if not errors: additions["category"] = category
+        else:
+            print("Error. Please fix the following and retry:")
+            for err in errors:
+                print(f"- {err}")
+            catagory_get()
+
+    def desc_get():
+        errors = []
+        description = input("Description: ").strip()
+        if not description:
+            errors.append("description required")
+        if not errors: additions["description"] = description
+        else:
+            print("Error. Please fix the following and retry:")
+            for err in errors:
+                print(f"- {err}")
+            desc_get()
+
+    def amount_get():
+        errors = []
+        amount_str = input("Amount (No negative #'s): ").strip()
+        try:
+            amount = float(amount_str)
+            if amount <= 0:
+                errors.append("amount must be a positive number")
+        except ValueError:
+            errors.append("amount must be a number")
+        if not errors: additions["amount"] = amount_str
+        else:
+            print("Error. Please fix the following and retry:")
+            for err in errors:
+                print(f"- {err}")
+            amount_get()
+
+    date_get()
+    catagory_get()
+    desc_get()
+    amount_get()
+
+    additions["id"] = gen_id()
+    modify_expenses_storage(additions)
+
+    expense_again = input("Would you like to input another expense? Y/N: ").strip()
+    if expense_again.lower() == "y":
         prompt_expense()
+    else:
+        prompt_start()
 
 # Prompt for the user to view total expenses categorized by month
 def prompt_monthly_total():
